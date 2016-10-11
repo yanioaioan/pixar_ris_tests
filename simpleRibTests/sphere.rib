@@ -1,0 +1,97 @@
+#Rib Test
+Display "sphere.tiff" "framebuffer" "rgb"
+
+
+Projection "perspective" "fov" 45
+Format 320 240 1
+FrameBegin 1
+    Option "trace" "int maxdepth" [5]
+
+    #transform the coordinate system
+    Translate 4 -2 20
+    Rotate -40 0 1 0
+    Rotate -20 1 0 0
+    Rotate 5 0 0 1
+
+
+
+
+
+    WorldBegin
+
+#        AttributeBegin
+#            IfBegin "user.renderpass == 'shadow'"
+#                Surface "null"
+#            ElseIf "user:renderpass == 'beauty'"
+#                Surface "rmarble"
+#            Else
+#                Surface "errorsurf"
+#            IfEnd
+#        AttributeEnd
+
+
+        #Create a ground Plane
+        TransformBegin
+            Translate 0 -7 0
+            Scale 50 50 50
+            Polygon "P" [
+                       -1 0 -1
+                        1 0 -1
+                        1 0  1
+                       -1 0  1
+                        ]
+        TransformEnd
+
+
+        TransformBegin
+            Translate 0 0 0
+            ReadArchive "torusRing.rib"
+        TransformEnd
+
+        TransformBegin
+            Translate 0 0 2
+            ReadArchive "torusRing.rib"
+        TransformEnd
+
+        #First Create a light
+        LightSource "distantlight" 1 "intensity" 1 "lightcolor" [1 1 1]  "from" [-5 5 -5] "to" [0 0 0]
+        #..and then..
+        #use a plastic for the 3 following torus rings
+        Surface "plastic" "Ka" [0.5] "Kd" [0.7] "Ks" [1.0]
+
+        TransformBegin
+            Translate 0 0 4
+            ReadArchive "torusRing.rib"
+        TransformEnd
+
+        TransformBegin
+            Translate 0 0 6
+            ReadArchive "torusRing.rib"
+        TransformEnd
+
+        TransformBegin
+            Translate 0 0 8
+            ReadArchive "torusRing.rib"
+        TransformEnd
+
+
+
+#        #Second row of ring-toruses
+#        TransformBegin
+#            Rotate 45 0 0 1
+#            Color [0.8 0 0]
+#            Translate 0 0 5
+#            ReadArchive "translatedSphere.rib"
+#        TransformEnd
+
+
+#        TransformBegin
+#            Rotate 90 0 0 1
+#            Color [0.8 0 0]
+#            #Sphere 0.5 -1 1 360
+#            Translate 0 0 5#
+#            ReadArchive "translatedSphere.rib"
+#        TransformEnd
+
+    WorldEnd
+FrameEnd

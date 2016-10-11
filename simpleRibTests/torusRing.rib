@@ -1,0 +1,91 @@
+ #Front row of ring-toruses
+        TransformBegin
+            Rotate 45 0 0 1
+            Translate 5 0 0
+
+            Color [0.8 0 0]
+            #Sphere 0.5 -1 1 360
+
+            #Torus 1 0.5 60 90 360
+            ReadArchive "translatedSphere.rib"
+        TransformEnd
+
+
+        TransformBegin
+            Rotate 90 0 0 1
+            Translate 5 0 0
+            Color [0 0.8 0]
+            #Sphere 0.5 -1 1 360
+
+            #Torus 1 0.5 60 90 360
+            ReadArchive "translatedSphere.rib"
+        TransformEnd
+
+
+        TransformBegin
+            Rotate 135 0 0 1
+            Translate 5 0 0
+
+            Color [0.8 0 0]
+            #Sphere 0.5 -1 1 360
+
+            #Torus 1 0.5 60 90 360
+            ReadArchive "translatedSphere.rib"
+        TransformEnd
+
+
+        TransformBegin
+            Rotate 180 0 0 1
+            Translate 5 0 0
+            Color [0 0.8 0]
+            #Sphere 0.5 -1 1 360
+
+            #Torus 1 0.5 60 90 360
+            ReadArchive "translatedSphere.rib"
+        TransformEnd
+
+        #Front row of ring-toruses
+        TransformBegin
+            Rotate 225 0 0 1
+            Translate 5 0 0
+
+            Color [0.8 0 0]
+            #Sphere 0.5 -1 1 360
+
+            #Torus 1 0.5 60 90 360
+            ReadArchive "translatedSphere.rib"
+        TransformEnd
+
+
+        TransformBegin
+            Rotate 270 0 0 1
+            Translate 5 0 0
+            Color [0 0.8 0]
+            #Sphere 0.5 -1 1 360
+
+            #Torus 1 0.5 60 90 360
+            ReadArchive "translatedSphere.rib"
+        TransformEnd
+
+
+        TransformBegin
+            Rotate 315 0 0 1
+            Translate 5 0 0
+
+            Color [0.8 0 0]
+            #Sphere 0.5 -1 1 360
+
+            #Torus 1 0.5 60 90 360
+            ReadArchive "translatedSphere.rib"
+        TransformEnd
+
+
+        TransformBegin
+            Rotate 360 0 0 1
+            Translate 5 0 0
+            Color [0 0.8 0]
+            #Sphere 0.5 -1 1 360
+
+            #Torus 1 0.5 60 90 360
+            ReadArchive "translatedSphere.rib"
+        TransformEnd

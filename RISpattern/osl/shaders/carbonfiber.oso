@@ -1,0 +1,17 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.6.2dev
+surface carbonfiber
+param	string	diffuseTexture	"diffuse.png"		%read{2147483647,-1} %write{2147483647,-1}
+param	string	bumpTexture	"bump.png"		%read{2147483647,-1} %write{2147483647,-1}
+param	float	bumpAmount	2		%read{2147483647,-1} %write{2147483647,-1}
+param	float	s	0		%meta{int,lockgeom,0}  %read{2147483647,-1} %write{2147483647,-1}
+param	float	t	0		%meta{int,lockgeom,0}  %read{2147483647,-1} %write{2147483647,-1}
+oparam	normal	bumpN	0 0 0		%read{2147483647,-1} %write{2147483647,-1}
+oparam	color	diffuseColor	0 0 0		%read{2147483647,-1} %write{2147483647,-1}
+oparam	color	bsdf	0 0 0		%read{2147483647,-1} %write{0,0}
+const	int	$const1	0		%read{0,0} %write{2147483647,-1}
+code ___main___
+# myOSLShaderTest.osl:14
+#     bsdf=0;
+	assign		bsdf $const1 	%filename{"myOSLShaderTest.osl"} %line{14} %argrw{"wr"}
+	end

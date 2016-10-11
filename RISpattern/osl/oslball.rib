@@ -1,0 +1,125 @@
+#Display "oslball.exr" "openexr" "rgba"
+Display "oslball" "framebuffer" "rgba"
+Format 512 512 1
+
+Option "searchpath" "string shader" ["./shaders:.:@"]
+Option "searchpath" "string texture" ["./textures:.:@"]
+
+
+Hider "raytrace" "int incremental" 0 "int minsamples" 16 "int maxsamples" 86
+Integrator "PxrPathTracer" "handle" "int numLightSamples" [8] "int numBxdfSamples" [8] "int numIndirectSamples" [4] "int numDiffuseSamples" [4] "int numSpecularSamples" [4]
+
+Quantize "rgba" 255 0 255 0
+
+Option "bucket" "string order" ["spiral"]
+
+Projection "perspective" "fov" 50
+
+
+
+
+
+
+
+# Eye: [0 20 40]  At: [0 5 0]  Up: [0 1 0]
+Transform [-1. 0. 0. 0 0. 0.936329177569 -0.351123441588 0 0. -0.351123441588 -0.936329177569 0 0. -4.6816458879 44.4756359346 1]
+
+
+
+
+WorldBegin
+
+  AttributeBegin
+    Attribute "visibility" "int transmission" 0 "int camera" 0
+    Attribute "trace" "bias" 0.001
+    ShadingRate 1000
+    Sides 1
+    Rotate 90 0 1 0
+    Translate 0 60 0
+    AreaLightSource "PxrAreaLight" "light0" "color lightcolor" [1 0.9 0.8] "float intensity" 8
+    TransformBegin
+      Translate 0 0 -75
+      Scale 70 70 70
+      Geometry "rectlight"
+    TransformEnd
+    AreaLightSource "PxrAreaLight" "light1" "color lightcolor" [0.6 0.8 1] "float intensity" 6
+    TransformBegin
+      Translate 0 0 150
+      Rotate 180 1 0 0
+      Scale 70 70 70
+      Geometry "rectlight"
+    TransformEnd
+  AttributeEnd
+
+
+	
+
+
+#  AttributeBegin
+#    Rotate 5 0 1 0
+#    Rotate 90 0 1 0
+#    Translate 0 0 2
+#    Rotate -125 0 0 1
+#    Pattern "PxrTexture" "cyltex" "string filename" "ratGrid.tex" "int invertT" [0]
+#    Bxdf "PxrDisney" "smooth" "reference color baseColor" "cyltex:resultRGB" "float roughness" 0.5
+#    Cylinder 60 -55 55 125
+#  AttributeEnd
+#
+#
+#  AttributeBegin
+#    Rotate -25 0 1 0
+#    Scale -1 1 1
+#
+#	#Trigger the shader with osl, with no arg
+#    Pattern "PxrOSL" "testOak" "shader" "oak"
+#    Bxdf "PxrDisney" "wood" "reference color baseColor" ["testOak:Color"] 
+#                "reference float roughness" ["testOak:Roughness"]
+#    ReadArchive "shaderBall.zip!outerBall.rib"
+#	Sphere 1 -1 1 360
+#
+#
+#
+#    Bxdf "PxrDisney" "blueball" "color baseColor" [0.1 .55 .94] "float roughness" [.8]
+#    ReadArchive "shaderBall.zip!innerBall.rib"
+#
+#	#write some osl shader script to feed to PxrOSL ..then..
+#	
+#	#Trigger the shader with osl , fed with bumpMap.tx as both diffuseTexture parameter and bumpTexture parameter
+#    Pattern "PxrOSL" "testCarbon" "string shader" "carbonfiber" 
+#                "string diffuseTexture" "bumpMap.tx"
+#				 "string bumpTexture" "bumpMap.tx"
+#
+#	#Now get the results back to the PxrDisney material
+#    Bxdf "PxrDisney" "carbonfiber" "reference normal bumpNormal" ["testCarbon:bumpN"] 
+#               					    "reference color baseColor" ["testCarbon:diffuseColor"] "float roughness" [.2] 
+#    
+#	Bxdf "PxrDisney" "gloss" "color baseColor" [.01 .01 .01] "float roughness" [.09]
+#    
+#	#blend the PxrDisneys above ("carbonfiber" and "gloss")
+#	#Bxdf "PxrBxdfBlend" "layered" "reference bxdf[2] lobe" ["carbonfiber" "gloss"]
+#    ReadArchive "shaderBall.zip!basePlate.rib"
+#    ReadArchive "shaderBall.zip!rmanShape.rib"
+##  AttributeEnd
+
+
+
+   #my osl shader test addapted from http://thhube.github.io/tutorials/osl/osl.html
+   AttributeBegin
+	TransformBegin
+	Translate 0 18 35		
+	Pattern "PxrOSL" "testmyOSLshader" "shader" "myOSLShaderTest" 
+					  "float mytestInput" 7
+					  "float mytestInput2" 5
+    Bxdf "PxrDisney" "myshader" "reference color baseColor" ["testmyOSLshader:bsdf"]                 
+    Sphere 1 -1 1 360
+	TransformEnd
+  AttributeEnd
+
+ 
+
+WorldEnd
+
+
+
+
+

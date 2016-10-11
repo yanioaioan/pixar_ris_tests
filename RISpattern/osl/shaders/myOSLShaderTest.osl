@@ -1,0 +1,11 @@
+surface myOSLShaderTest(
+    float mytestInput = 1.0,
+    float mytestInput2=1.0,
+    color diffuse_col = color(0.5, 0.2, 0.1),
+    float roughness = 1.5,
+    output color bsdf = 0
+    //    #output closure color bsdf = 0
+    ) 
+{
+    bsdf = diffuse_col*(mytestInput/mytestInput2) ; //* reflection(N)
+}

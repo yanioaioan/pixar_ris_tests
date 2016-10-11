@@ -1,0 +1,92 @@
+#Rib Test
+Display "transformations.tiff" "framebuffer" "rgb"
+
+
+Projection "perspective" "fov" 45
+Format 640 480 1
+FrameBegin 1
+    
+	Translate 0 0 4.5
+	Rotate -25 1 0 0
+	Rotate -20 0 1 0
+	
+	
+    WorldBegin
+
+		#base
+        TransformBegin
+           #transform the coordinate system
+			
+			Translate 0 -1 0
+			Scale 0.9 0.9 0.9
+			Sphere 1 -1 1 360
+			
+        TransformEnd
+        
+        #midle
+        TransformBegin
+           #transform the coordinate system
+			
+			Translate 0 0 0
+			Scale 0.6 0.6 0.6
+			Sphere 1 -1 1 360
+			
+        TransformEnd
+        
+        #head
+        TransformBegin
+           #transform the coordinate system
+			
+			Translate 0 0.8 0
+			Scale 0.3 0.3 0.3
+			Sphere 1 -1 1 360
+			
+        TransformEnd
+        
+        #nose
+        TransformBegin
+           #transform the coordinate system
+			
+			#Here we rotate after translation, which means we are going to rotate about the origin, from where we are already translated
+			
+			#3rd rotate
+			Rotate -20 0 1 0
+			#2nd translate
+			Translate 0 0.8 -0.4
+			#1st scale
+			Scale 0.08 0.09 0.15
+			Sphere 1 -1 1 360
+			
+        TransformEnd
+        
+        #hut base
+        TransformBegin
+           #transform the coordinate system
+			
+			Translate 0 1.1 0	
+			Rotate 90 1 0 0
+			Scale 0.3 0.3 0.3
+			#Disk 1 1.5 360
+			Torus 1.4 0.4 40 150 360
+			
+        TransformEnd
+        
+        #hut base
+        TransformBegin
+           #transform the coordinate system
+			
+			#USUALLY WHAT WE WANT IS : SCALE,ROTATE,TRANSLATE (READ THE FOLLOWING BOTTOM-UP). THAT IS WHAT ACTUALLY HAPPENS
+			
+			Translate 0 1.25 0	
+			Rotate 90 1 0 0
+			Scale 0.3 0.3 0.25
+			Cylinder 1 -1 1 360
+
+			
+        TransformEnd
+        
+        
+
+       
+    WorldEnd
+FrameEnd

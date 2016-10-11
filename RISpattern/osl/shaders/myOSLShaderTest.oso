@@ -1,0 +1,15 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.6.2dev
+surface myOSLShaderTest
+param	float	mytestInput	1		%read{0,0} %write{2147483647,-1}
+param	float	mytestInput2	1		%read{0,0} %write{2147483647,-1}
+param	color	diffuse_col	0.5 0.2 0.1		%read{1,1} %write{2147483647,-1}
+param	float	roughness	1.5		%read{2147483647,-1} %write{2147483647,-1}
+oparam	color	bsdf	0 0 0		%read{2147483647,-1} %write{1,1}
+temp	float	$tmp1	%read{1,1} %write{0,0}
+code ___main___
+# myOSLShaderTest.osl:10
+#     bsdf = diffuse_col*(mytestInput/mytestInput2) ; //* reflection(N)
+	div		$tmp1 mytestInput mytestInput2 	%filename{"myOSLShaderTest.osl"} %line{10} %argrw{"wrr"}
+	mul		bsdf diffuse_col $tmp1 	%argrw{"wrr"}
+	end
