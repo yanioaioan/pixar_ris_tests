@@ -29,7 +29,7 @@ Integrator "PxrPathTracer" "handle" "int numLightSamples" [8] "int numBxdfSample
 
 FrameBegin 1	# {
  Display "lemon" "framebuffer" "rgba" 
- #Display "lemon.tiff" "file" "rgba" 
+ #Display "outputLemonImage.tiff" "file" "rgba" 
  Format 720 576 1
  Exposure 1 1.8
  
