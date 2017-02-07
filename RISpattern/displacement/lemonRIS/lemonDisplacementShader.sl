@@ -10,10 +10,11 @@ lemonDisplacementShader(float disp = 0.25; float atten = 0.5)
         //https://renderman.pixar.com/resources/current/RenderMan/rslGuidelines97.html
         //normal sN = normalize(ntransform("shader",N));
         
-        //float scale;
+        float scale;
         
         //assing the data from the dipl input parameter to scale variable
-        //evalparam("disp",scale);
+        evalparam("disp",scale);
+       
         
         //transform point along normal in shader space
         //P = transform("shader","current",PP + sN*scale*atten);
@@ -21,7 +22,7 @@ lemonDisplacementShader(float disp = 0.25; float atten = 0.5)
         //calculate new transformed point normal, so as to do proper lighting
         //N = calculatenormal(P);
         
-        
+       
         //LEMON shader
         normal NN=normalize(N);
 		float mag;
@@ -37,7 +38,7 @@ lemonDisplacementShader(float disp = 0.25; float atten = 0.5)
 			//scale the displacement in object space, hence mag is now relative to this space
 			mag /= length(vtransform("object",NN));
 			
-		P=P-(mag*0.01)*NN;
+		P=P-(mag*0.01*disp*atten)*NN;
 		
 		N=calculatenormal(P);
     }

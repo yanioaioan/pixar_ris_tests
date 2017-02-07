@@ -1,0 +1,65 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.6.2dev
+surface simplesurface
+param	color	Cin	1 1 1		%read{7,7} %write{2147483647,-1}
+oparam	color	Cout	0 0 0		%read{13,13} %write{7,13}
+global	float	u	%read{6,6} %write{2147483647,-1}
+global	float	v	%read{6,6} %write{2147483647,-1}
+local	color	red	%read{2147483647,-1} %write{0,0}
+local	color	green	%read{2147483647,-1} %write{1,1}
+local	color	blue	%read{2147483647,-1} %write{2,2}
+local	color	greenISH	%read{13,13} %write{3,3}
+local	float	fuzz	%read{9,10} %write{4,4}
+local	float	dist	%read{11,11} %write{8,8}
+local	float	inDisk	%read{13,13} %write{12,12}
+local	point	centre	%read{8,8} %write{5,5}
+local	point	here	%read{8,8} %write{6,6}
+const	string	$const1	"rgb"		%read{0,3} %write{2147483647,-1}
+const	float	$const3	1		%read{0,12} %write{2147483647,-1}
+const	float	$const5	0		%read{0,6} %write{2147483647,-1}
+const	float	$const6	0.5		%read{3,3} %write{2147483647,-1}
+const	float	$const7	0.80000001		%read{3,3} %write{2147483647,-1}
+const	float	$const8	0.025		%read{4,4} %write{2147483647,-1}
+const	point	$const9	0.5 0.5 0		%read{5,5} %write{2147483647,-1}
+temp	float	$tmp1	%read{12,12} %write{11,11}
+const	float	$const10	0.30000001		%read{9,10} %write{2147483647,-1}
+temp	float	$tmp2	%read{11,11} %write{9,9}
+temp	float	$tmp3	%read{11,11} %write{10,10}
+code ___main___
+# simplesurface.osl:14
+#     color red=color("rgb",1,0,0);
+	color		red $const1 $const3 $const5 $const5 	%filename{"simplesurface.osl"} %line{14} %argrw{"wrrrr"}
+# simplesurface.osl:15
+#     color green=color  ("rgb",0,1,0);
+	color		green $const1 $const5 $const3 $const5 	%line{15} %argrw{"wrrrr"}
+# simplesurface.osl:16
+#     color blue=color  ("rgb",0,0,1);
+	color		blue $const1 $const5 $const5 $const3 	%line{16} %argrw{"wrrrr"}
+# simplesurface.osl:18
+#     color greenISH = color("rgb", 0.5, 0.8, 0);
+	color		greenISH $const1 $const6 $const7 $const5 	%line{18} %argrw{"wrrrr"}
+# simplesurface.osl:20
+#     float fuzz=0.025;
+	assign		fuzz $const8 	%line{20} %argrw{"wr"}
+# simplesurface.osl:23
+#     point centre=point (0.5,0.5,0);
+	assign		centre $const9 	%line{23} %argrw{"wr"}
+# simplesurface.osl:24
+#     point here=point(u,v,0);
+	point		here u v $const5 	%line{24} %argrw{"wrrr"}
+# simplesurface.osl:26
+#     Cout=Cin;
+	assign		Cout Cin 	%line{26} %argrw{"wr"}
+# simplesurface.osl:28
+#     dist=distance(centre,here);
+	distance	dist centre here 	%line{28} %argrw{"wrr"}
+# simplesurface.osl:29
+#     inDisk=1-smoothstep(0.3-fuzz,0.3+fuzz,dist);
+	sub		$tmp2 $const10 fuzz 	%line{29} %argrw{"wrr"}
+	add		$tmp3 $const10 fuzz 	%argrw{"wrr"}
+	smoothstep	$tmp1 $tmp2 $tmp3 dist 	%argrw{"wrrr"}
+	sub		inDisk $const3 $tmp1 	%argrw{"wrr"}
+# simplesurface.osl:30
+#     Cout=mix(Cout,greenISH,inDisk);
+	mix		Cout Cout greenISH inDisk 	%line{30} %argrw{"wrrr"}
+	end
