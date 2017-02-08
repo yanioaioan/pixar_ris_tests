@@ -27,18 +27,29 @@ lemonDisplacementShader(float disp = 0.25; float atten = 0.5)
         normal NN=normalize(N);
 		float mag;
 		//noise the surface once
-		mag=float noise(P*3.8);	
-
+		mag=abs(float noise(P*0.6)-0.9);
+		
 		//on the top of the previous noised surface add this noise level
-		mag+=abs(float noise(P*50,2*25))/2;
+		mag+=abs(float noise(P*50,50*2)-0.5)/35;
+		
+		float currnetUVColor=texture("outSide.tx",u,v);
 		//..and so on
-		//mag+=abs(float noise(P*80,frame*0.02)-0.5)/4;
-		//mag+=abs(float noise(P*16,frame*0.02)-0.5)/4;
+		//if (currnetUVColor<0.1)
+		{
+			float frame=5;
+			mag-=abs(float noise(P*80,frame*20)-0.5)/80;
+		}
+		
+		
+		//mag+=abs(float noise(P*2,2)-0.5)/15;
+		//mag+=abs(float noise(P*200,200)-0.5)/15;
 
 			//scale the displacement in object space, hence mag is now relative to this space
 			mag /= length(vtransform("object",NN));
 			
-		P=P-(mag*0.01*disp*atten)*NN;
+		
+		
+		P=P+(mag*disp*atten)*NN; //
 		
 		N=calculatenormal(P);
     }

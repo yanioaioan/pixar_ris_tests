@@ -28,4 +28,17 @@ output	color Cout=0
     dist=distance(centre,here);
     inDisk=1-smoothstep(0.3-fuzz,0.3+fuzz,dist);
     Cout=mix(Cout,greenISH,inDisk);
+    
+    
+    
+	float currnetUVColor=texture("outSide.tx",u,v);
+	//..and so on
+	float frame=1;
+	if (currnetUVColor<0.5)
+	{
+		Cout = greenISH;
+	}
+	
+	
+
 }

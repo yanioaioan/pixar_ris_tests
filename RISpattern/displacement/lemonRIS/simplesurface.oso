@@ -2,22 +2,25 @@ OpenShadingLanguage 1.00
 # Compiled by oslc 1.6.2dev
 surface simplesurface
 param	color	Cin	1 1 1		%read{7,7} %write{2147483647,-1}
-oparam	color	Cout	0 0 0		%read{13,13} %write{7,13}
-global	float	u	%read{6,6} %write{2147483647,-1}
-global	float	v	%read{6,6} %write{2147483647,-1}
+oparam	color	Cout	0 0 0		%read{13,13} %write{7,18}
+global	float	u	%read{6,14} %write{2147483647,-1} %derivs
+global	float	v	%read{6,14} %write{2147483647,-1} %derivs
 local	color	red	%read{2147483647,-1} %write{0,0}
 local	color	green	%read{2147483647,-1} %write{1,1}
 local	color	blue	%read{2147483647,-1} %write{2,2}
-local	color	greenISH	%read{13,13} %write{3,3}
+local	color	greenISH	%read{13,18} %write{3,3}
 local	float	fuzz	%read{9,10} %write{4,4}
 local	float	dist	%read{11,11} %write{8,8}
 local	float	inDisk	%read{13,13} %write{12,12}
 local	point	centre	%read{8,8} %write{5,5}
 local	point	here	%read{8,8} %write{6,6}
+local	float	currnetUVColor	%read{16,16} %write{14,14}
+local	float	frame	%read{2147483647,-1} %write{15,15}
 const	string	$const1	"rgb"		%read{0,3} %write{2147483647,-1}
+const	int	$const2	1		%read{15,15} %write{2147483647,-1}
 const	float	$const3	1		%read{0,12} %write{2147483647,-1}
 const	float	$const5	0		%read{0,6} %write{2147483647,-1}
-const	float	$const6	0.5		%read{3,3} %write{2147483647,-1}
+const	float	$const6	0.5		%read{3,16} %write{2147483647,-1}
 const	float	$const7	0.80000001		%read{3,3} %write{2147483647,-1}
 const	float	$const8	0.025		%read{4,4} %write{2147483647,-1}
 const	point	$const9	0.5 0.5 0		%read{5,5} %write{2147483647,-1}
@@ -25,6 +28,8 @@ temp	float	$tmp1	%read{12,12} %write{11,11}
 const	float	$const10	0.30000001		%read{9,10} %write{2147483647,-1}
 temp	float	$tmp2	%read{11,11} %write{9,9}
 temp	float	$tmp3	%read{11,11} %write{10,10}
+const	string	$const11	"outSide.tx"		%read{14,14} %write{2147483647,-1}
+temp	int	$tmp4	%read{17,17} %write{16,16}
 code ___main___
 # simplesurface.osl:14
 #     color red=color("rgb",1,0,0);
@@ -62,4 +67,17 @@ code ___main___
 # simplesurface.osl:30
 #     Cout=mix(Cout,greenISH,inDisk);
 	mix		Cout Cout greenISH inDisk 	%line{30} %argrw{"wrrr"}
+# simplesurface.osl:34
+# 	float currnetUVColor=texture("outSide.tx",u,v);
+	texture		currnetUVColor $const11 u v 	%line{34} %argrw{"wrrr"} %argderivs{2,3}
+# simplesurface.osl:36
+# 	float frame=1;
+	assign		frame $const2 	%line{36} %argrw{"wr"}
+# simplesurface.osl:37
+# 	if (currnetUVColor<0.5)
+	lt		$tmp4 currnetUVColor $const6 	%line{37} %argrw{"wrr"}
+	if		$tmp4 19 19 	%argrw{"r"}
+# simplesurface.osl:39
+# 		Cout = greenISH;
+	assign		Cout greenISH 	%line{39} %argrw{"wr"}
 	end
