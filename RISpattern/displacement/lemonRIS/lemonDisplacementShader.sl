@@ -102,9 +102,27 @@ level =  texture(displace_map,s,t,
 magnitude = ((level * 2) - 1) * Km;
 
 
-
-
+float bigporesmag=0;
 /* Calculate Big Pores on the Surface */
+if (t>0.09)
+{
+	ss=mod(s*90+(0.9*noise(PP)+0.1),1);
+	tt=mod(t*90+(0.9*noise(PP)+0.1),1);
+    centre=point (0.5,0.5,0);
+	here=point(ss,tt,0);
+    dist=distance(centre,here)+(0.1*(noise(PP*50)/0.2));
+    inDisk=1-smoothstep(-0.5,(0.25*noise(PP))+0.2,dist);
+    bigporesmag=mix(0,1,inDisk);  
+	bigporesmag /= length(vtransform("object",NN));
+}
+else
+{
+bigporesmag=0;
+}
+
+
+
+/* Calculate  Pores on the Surface */
 //if (t>0.09)
 {
 	ss=mod(s*95+(0.95*noise(PP)),1);
@@ -112,7 +130,7 @@ magnitude = ((level * 2) - 1) * Km;
     centre=point (0.5,0.5,0);
 	here=point(ss,tt,0);
     dist=distance(centre,here)+(0.70*(noise(PP*10)/0.2));
-    inDisk=1-smoothstep(-0.1,(0.2*noise(PP))+0.25,dist);
+    inDisk=1-smoothstep(-0.5,(0.5*noise(PP))+0.25,dist);
     mag2=mix(0,1,inDisk);  
 	mag2 /= length(vtransform("object",NN));
 }
@@ -213,7 +231,7 @@ for(i=0;i<4;i+=1)
 		
 		
 		
-	float mag=(mag1*-0.12)+(mag2*-0.002)+ (mag3*-0.0008)  +(mag6*-0.11)+(middleTopDentBump*-0.01)+(middlBottomDentBump*0.1)+ (mag7*-0.02)+(mag8*0.08) + (magnitude*-0.001); //+(mag3*-0.055)+(mag4*0.2)+(mag5*-0.2)+(mag6*0.15)+(mag7*-0.1)+(mag8*-0.15);
+	float mag=(mag1*-0.12)+(mag2*-0.002)+(bigporesmag*-0.02)+ (mag3*-0.0008)  +(mag6*-0.11)+(middleTopDentBump*-0.01)+(middlBottomDentBump*0.1)+ (mag7*-0.02)+(mag8*0.08) + (magnitude*-0.001); //+(mag3*-0.055)+(mag4*0.2)+(mag5*-0.2)+(mag6*0.15)+(mag7*-0.1)+(mag8*-0.15);
 
 		
 		
