@@ -7,7 +7,7 @@ Option "statistics" "int endofframe" 1 "string xmlfilename" "disp.xml"
 
 #Display "disp.tif" "tiff" "rgba"
 Quantize "rgba" 255 0 255 0
-Format 1024 1024 1
+Format 1920 1080 1
 Projection "perspective" "fov" [45]
 
 PixelVariance 0
@@ -30,15 +30,15 @@ Integrator "PxrPathTracer" "handle" "int numLightSamples" [8] "int numBxdfSample
 FrameBegin 1	# {
  Display "lemon" "framebuffer" "rgba" 
  #Display "outputLemonImage.tiff" "file" "rgba" 
- Format 1024 1024 1
+ Format 1920 1080 1
  Exposure 1 1.5
  
  ShadingRate 1
- ScreenWindow -1 1 -0.759375 0.759375
+ #ScreenWindow -1 1 -0.759375 0.759375
  Projection "perspective" "fov" [45]
  Clipping 0.001 1000
- Transform [0.999632 0.00343098 0.0268948 0 0.0127459 0.816045 -0.577848 0
-	0.0239299 -0.577978 0.815701 0 1.72875 2.10146 5.1487 1]
+ #Transform [0.999632 0.00343098 0.0268948 0 0.0127459 0.816045 -0.577848 0 	0.0239299 -0.577978 0.815701 0 1.72875 2.10146 5.1487 1]
+ Translate 0 0 1 
  WorldBegin	# {
  Attribute "visibility" "trace" [ 1 ]
   Atmosphere "depthcue"
@@ -50,9 +50,10 @@ FrameBegin 1	# {
  TransformEnd
   #
   # Light: light3
-  Transform [1 0 0 0	 0 1 0 0	 0 0 -1 0 	0 2 0 1]
+  #Transform [1 0 0 0	 0 1 0 0	 0 0 -1 0 	0 5 0 1]
+  
 
-	#AreaLightSource "PxrStdAreaLight" "theLight" "float exposure" [4]
+  #AreaLightSource "PxrStdAreaLight" "theLight" "float exposure" [4]
 	
   #PROPER LIGHTS NEEDED TO BE DEFINED, otherwise all Integrators apart from the Default/Debug won't work
   AttributeBegin
@@ -60,18 +61,34 @@ FrameBegin 1	# {
     Attribute "trace" "bias" 0.001
     ShadingRate 1000
     Sides 1
-    Rotate 65 0 1 0
-    Translate 0 60 0
+    #Rotate 65 0 1 0
+    
     
 		
 		
-	
-		AttributeBegin	
-		AreaLightSource "PxrStdAreaLight" "theLight" "float exposure" [13]
-		Translate -30 -70 0		
 		
+		AttributeBegin	
+		#AreaLightSource "PxrStdAreaLight" "theLight" "float exposure" [12]
+		#Translate 0 20 -10		
+		#Sphere 1 -1 1 360
+		
+			
+		AreaLightSource "PxrStdAreaLight" "theLight" "float exposure" [8]
+		Translate 5 20 -10		
 		Sphere 1 -1 1 360
+			
+		AreaLightSource "PxrStdAreaLight" "theLight2" "float exposure" [8]
+		Translate -5 -15 5		
+		Sphere 1 -1 1 360
+		
+		AreaLightSource "PxrStdEnvDayLight" "envLight" "float exposure" [8]
+		Translate 0 5 5		
+		Sphere 1 -1 1 360
+		
+		
 		AttributeEnd
+		
+		
 	    
     
     #AreaLightSource "PxrAreaLight" "light0" "color lightcolor" [1 0.9 0.8] "float intensity" 8 
@@ -124,23 +141,50 @@ Surface "lemonDisplacementShader" "reference float disp" ["height:resultF"]  "fl
 Pattern "PxrOSL" "myOSLShaderContribution" "string shader" "simplesurface" "color Cin" [0.8 0.5 0]
 
 #Apply lemon .tx Texture as the base color
-Pattern "PxrTexture" "myLemonTexture" "string filename" "outSide.tx"
-Bxdf "PxrDisney" "lemonTexture" "reference color baseColor" ["myLemonTexture:resultRGB"] "float roughness" [0.2]  "reference color subsurfaceColor" ["myOSLShaderContribution:Cout"] "float subsurface" [0.2]
+Pattern "PxrTexture" "myLemonTexture" "string filename" "lemondots.tx"
+#Bxdf "PxrDisney" "lemonTexture" "color baseColor" [0.8 0.5 0] "float roughness" [0.2]  "reference color subsurfaceColor" ["myOSLShaderContribution:Cout"] "float subsurface" [0.3]
+#Bxdf "PxrDisney" "lemonTexture" "reference color baseColor" ["myLemonTexture:resultRGB"] "float roughness" [0.3]  "reference color subsurfaceColor" ["myOSLShaderContribution:Cout"] "float subsurface" [0.08]
+Bxdf "PxrDisney" "lemonTexture" "color baseColor" [0.8 0.5 0] "float roughness" [0.2]  "reference color subsurfaceColor" ["myOSLShaderContribution:Cout"] "float subsurface" [0.15]
+
+
+
+#Layering can only be done with substrates, so gave up
+#control the following layer
+#Pattern "PxrLMLayer" "layerAdjustment" "int diffuseBehavior" [0]  "float specularRoughness" [0.3]
+
+#Bxdf "PxrLMDiffuse" "lemonTexturelayer" "reference color frontColor" ["myLemonTexture:resultRGB"] "reference color subsurfaceColor" ["myOSLShaderContribution:Cout"] "float subsurface" [0.2]
+#"reference struct lmlayer" ["layerAdjustment:result"]
+
+#mixer is needed to mix between to PxrLMLayer patterns
+#Pattern "PxrLMMixer" "mixer" "reference struct input0" ["layerAdjustment:result"]  "reference struct input1" ["layerAdjustment2:result"]
+
+
 
 #Bxdf "PxrDisney" "smooth" "color baseColor"  [0.8 0.7 0.05]
 
-Translate -1 6 12
+Translate 0 0.5 3
 
-Sphere 2 -2 2 360
+#Rotate -20 1 0 0 
+#Rotate  -70 0 1 0 
+Rotate 170 1 0 0
+Rotate  90 0 1 0
+
+
+
+#Half Sphere
+#Sphere 0.5 -0 0.5 360 
+
+Sphere 1 -1 1 360 
+
 #Cylinder .5 .2 1 360
 
 
 
-Translate 2 0 0
+#Translate 2 0 0
 #Sphere 2 -2 2 360
   
 
 AttributeEnd
   
- WorldEnd	# }
-FrameEnd	# }
+WorldEnd	
+FrameEnd	

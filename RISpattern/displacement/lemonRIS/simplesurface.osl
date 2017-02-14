@@ -15,29 +15,42 @@ output	color Cout=0
     color green=color  ("rgb",0,1,0);
     color blue=color  ("rgb",0,0,1);
     
-    color greenISH = color("rgb", 0.5, 0.8, 0);
+    color greenISH = color("rgb", 0.05, 0.98, 0);
     
-    float fuzz=0.025;
+    float fuzz=0.005;
     float dist;
     float inDisk;
-    point centre=point (0.5,0.5,0);
+    point centre=point (0.6,0.3,0);
     point here=point(u,v,0);
 
     Cout=Cin;
 
+    //dist=distance(centre,here+0.1);
+    //inDisk=1-smoothstep(0.55-fuzz,0.56+fuzz,dist);
+    //color CoutTmp=mix(Cout,greenISH,inDisk);
+    
+    dist=distance(centre,here-0.01);
+    inDisk=1-smoothstep(0.02-fuzz*noise(P), 0.03-fuzz*noise(P), dist);
+    color smallGreenSpotOnTheLeft=mix(Cout,greenISH,inDisk);
+    
+    
+    centre=point (0.5,0.5,0);
     dist=distance(centre,here);
-    inDisk=1-smoothstep(0.3-fuzz,0.3+fuzz,dist);
-    Cout=mix(Cout,greenISH,inDisk);
+    inDisk=1-smoothstep(0.1-fuzz*noise(P), 0.2-fuzz*noise(P), dist);
+    color bigGreenishMiddleArea=mix(Cout,greenISH,inDisk);
+    
+    Cout=mix(smallGreenSpotOnTheLeft,bigGreenishMiddleArea,0.6);
+    //Cout=smallGreenSpotOnTheLeft;
     
     
     
 	float currnetUVColor=texture("outSide.tx",u,v);
 	//..and so on
 	float frame=1;
-	if (currnetUVColor<0.5)
-	{
-		Cout = greenISH;
-	}
+	//if (currnetUVColor<0.5)
+	//{
+	//	Cout = red;
+	//}
 	
 	
 
